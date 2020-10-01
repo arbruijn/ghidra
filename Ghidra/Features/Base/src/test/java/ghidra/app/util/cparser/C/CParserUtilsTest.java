@@ -15,12 +15,14 @@
  */
 package ghidra.app.util.cparser.C;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Assert;
 import org.junit.Test;
 
 import generic.test.AbstractGenericTest;
+import ghidra.program.model.data.Structure;
 
 public class CParserUtilsTest extends AbstractGenericTest {
 
@@ -48,6 +50,15 @@ public class CParserUtilsTest extends AbstractGenericTest {
 
 		String characterInfo = "near character 17";
 		assertTrue(message.contains(characterInfo));
+	}
+
+	@Test
+    public void testDeclareMultiPtr() throws ParseException {
+		String code = "struct s { int *a, *b; };";
+		CParser parser = new CParser();
+		parser.parse(code);
+		var struct = (Structure)parser.getStructs().get("s");
+		assertEquals("int *", struct.getComponent(1).getDataType().toString());
 	}
 
 	private Throwable getParseError(String function) {

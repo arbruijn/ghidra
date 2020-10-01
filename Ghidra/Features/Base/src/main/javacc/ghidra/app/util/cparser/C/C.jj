@@ -2046,8 +2046,7 @@ Declaration Pointer(Declaration dec) : {}
 	("*" | "&") [ dec = TypeQualifierList(dec) ] [ dec = Pointer(dec) ] 
 	{
 	    // TODO: is this right?
-		dec.setDataType(dtMgr.getPointer(dec.getDataType()));
-		return dec;
+		return new Declaration(dec, dtMgr.getPointer(dec.getDataType()));
 	}
 }
 
